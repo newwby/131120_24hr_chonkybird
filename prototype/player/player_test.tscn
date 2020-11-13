@@ -1,14 +1,30 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://prototype/player/player_test.gd" type="Script" id=1]
+[ext_resource path="res://prototype/player/chonky.png" type="Texture" id=2]
+[ext_resource path="res://prototype/player/chonky_frame3.png" type="Texture" id=3]
+[ext_resource path="res://prototype/player/chonky_frame2.png" type="Texture" id=4]
+[ext_resource path="res://prototype/player/chonky_frame4.png" type="Texture" id=5]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 12.8874, 12.9995 )
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "chonky",
+"speed": 9.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 26.7165
+height = 31.5495
 
 [node name="Player" type="RigidBody2D"]
+z_index = 15
+z_as_relative = false
 script = ExtResource( 1 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
+visible = false
 margin_right = 25.0
 margin_bottom = 25.0
 color = Color( 0.159804, 0.0705882, 0.94902, 1 )
@@ -16,6 +32,27 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Boost_Particles" type="CPUParticles2D" parent="."]
+position = Vector2( 0.749146, 0 )
+emitting = false
+amount = 25
+lifetime = 1.75
+one_shot = true
+speed_scale = 3.0
+explosiveness = 0.5
+randomness = 0.25
+lifetime_randomness = 0.5
+emission_shape = 1
+emission_sphere_radius = 25.0
+direction = Vector2( 5, 0 )
+spread = 90.0
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 2 )
+animation = "chonky"
+frame = 3
+playing = true
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 12.193, 12.193 )
+position = Vector2( 0.20655, 0.581122 )
 shape = SubResource( 1 )

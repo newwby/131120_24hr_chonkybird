@@ -1,0 +1,232 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://prototype/ui_hud/life_bar.tscn" type="PackedScene" id=1]
+[ext_resource path="res://prototype/player/player_test.tscn" type="PackedScene" id=2]
+[ext_resource path="res://prototype/objects/barrier.tscn" type="PackedScene" id=3]
+[ext_resource path="res://prototype/ui_hud/score_timer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://prototype/collectables/collectable.tscn" type="PackedScene" id=5]
+[ext_resource path="res://prototype/FailureArea.gd" type="Script" id=6]
+[ext_resource path="res://prototype/test_game_level.gd" type="Script" id=7]
+[ext_resource path="res://prototype/objects/satellite.tscn" type="PackedScene" id=8]
+[ext_resource path="res://prototype/objects/asteroid.tscn" type="PackedScene" id=9]
+[ext_resource path="res://prototype/audio/rubberduck_oga_crazy-space.ogg" type="AudioStream" id=10]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 18.2493, 231.511 )
+
+[node name="GameLevel" type="Node2D"]
+position = Vector2( -6.13519, -8.43875 )
+script = ExtResource( 7 )
+obstacle_satellite = ExtResource( 8 )
+obstacle_asteroid = ExtResource( 9 )
+pickup = ExtResource( 5 )
+
+[node name="invisible_barriers" type="Node2D" parent="."]
+visible = false
+
+[node name="RigidBody2D" parent="invisible_barriers" instance=ExtResource( 3 )]
+position = Vector2( -74.3624, 0.594601 )
+
+[node name="RigidBody2D2" parent="invisible_barriers" instance=ExtResource( 3 )]
+position = Vector2( -73.1732, 162.921 )
+
+[node name="RigidBody2D7" parent="invisible_barriers" instance=ExtResource( 3 )]
+position = Vector2( 655.544, 0.594601 )
+
+[node name="RigidBody2D8" parent="invisible_barriers" instance=ExtResource( 3 )]
+position = Vector2( 656.733, 162.921 )
+
+[node name="RigidBody2D3" parent="invisible_barriers" instance=ExtResource( 3 )]
+position = Vector2( 108.812, 364.82 )
+rotation = 1.57079
+
+[node name="RigidBody2D4" parent="invisible_barriers" instance=ExtResource( 3 )]
+position = Vector2( 309.788, 364.82 )
+rotation = 1.57079
+
+[node name="RigidBody2D5" parent="invisible_barriers" instance=ExtResource( 3 )]
+position = Vector2( 511.359, 364.82 )
+rotation = 1.57079
+
+[node name="RigidBody2D6" parent="invisible_barriers" instance=ExtResource( 3 )]
+position = Vector2( 710.551, 364.82 )
+rotation = 1.57079
+
+[node name="RigidBody2D9" parent="invisible_barriers" instance=ExtResource( 3 )]
+position = Vector2( 102.078, -28.1026 )
+rotation = 1.57079
+
+[node name="RigidBody2D10" parent="invisible_barriers" instance=ExtResource( 3 )]
+position = Vector2( 303.054, -28.1026 )
+rotation = 1.57079
+
+[node name="RigidBody2D11" parent="invisible_barriers" instance=ExtResource( 3 )]
+position = Vector2( 504.624, -28.1026 )
+rotation = 1.57079
+
+[node name="RigidBody2D12" parent="invisible_barriers" instance=ExtResource( 3 )]
+position = Vector2( 703.816, -28.1026 )
+rotation = 1.57079
+
+[node name="ColorRect" type="ColorRect" parent="."]
+show_behind_parent = true
+margin_right = 650.0
+margin_bottom = 375.0
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+color = Color( 0.156863, 0.0392157, 0.286275, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="star_fade" type="CPUParticles2D" parent="."]
+position = Vector2( 320, 180 )
+amount = 100
+emission_shape = 2
+emission_rect_extents = Vector2( 1200, 360 )
+direction = Vector2( 0, 0 )
+gravity = Vector2( -75, 0 )
+
+[node name="Spawns" type="Node2D" parent="."]
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="FailureArea" type="Area2D" parent="Node2D"]
+position = Vector2( -33.371, 173.529 )
+script = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/FailureArea"]
+shape = SubResource( 1 )
+
+[node name="position_upper" type="Position2D" parent="."]
+position = Vector2( 667, 0 )
+
+[node name="position_lower" type="Position2D" parent="."]
+position = Vector2( 667, 360 )
+
+[node name="SpawnBarrierTimer" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 71.2134, 44.0166 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI_LifeBar" parent="CanvasLayer" instance=ExtResource( 1 )]
+mouse_filter = 2
+
+[node name="UI_ScoreTimer" parent="CanvasLayer" instance=ExtResource( 4 )]
+mouse_filter = 2
+
+[node name="PlayerStart" type="Position2D" parent="."]
+position = Vector2( 302.341, 180 )
+
+[node name="DifficultyTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[node name="Darkness" type="ColorRect" parent="."]
+visible = false
+margin_right = 1250.0
+margin_bottom = 600.0
+mouse_filter = 2
+color = Color( 0.0156863, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FadeTweenBKG" type="Tween" parent="."]
+
+[node name="FadeTweenUI_Player" type="Tween" parent="."]
+
+[node name="CC_GameOver" type="CenterContainer" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 5.0
+margin_right = 645.0
+margin_bottom = 375.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBox" type="VBoxContainer" parent="CC_GameOver"]
+margin_left = 242.0
+margin_top = 159.0
+margin_right = 398.0
+margin_bottom = 215.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBox1" type="HBoxContainer" parent="CC_GameOver/VBox"]
+margin_right = 163.0
+margin_bottom = 14.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label_GameOver" type="Label" parent="CC_GameOver/VBox/HBox1"]
+margin_right = 163.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+size_flags_vertical = 7
+text = "GAME OVER"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="HBox2" type="HBoxContainer" parent="CC_GameOver/VBox"]
+margin_top = 18.0
+margin_right = 163.0
+margin_bottom = 32.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="CC_GameOver/VBox/HBox2"]
+margin_bottom = 14.0
+
+[node name="HBox3" type="HBoxContainer" parent="CC_GameOver/VBox"]
+margin_top = 36.0
+margin_right = 163.0
+margin_bottom = 56.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button_PlayAgain" type="Button" parent="CC_GameOver/VBox/HBox3"]
+margin_right = 77.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+button_mask = 3
+text = "Try Again"
+align = 0
+
+[node name="Button_QuitGame" type="Button" parent="CC_GameOver/VBox/HBox3"]
+margin_left = 81.0
+margin_right = 163.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+button_mask = 3
+text = "Quit Game"
+align = 2
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+volume_db = -15.0
+autoplay = true
+[connection signal="body_entered" from="Node2D/FailureArea" to="Player" method="_on_FailureArea_body_entered"]
+[connection signal="timeout" from="SpawnBarrierTimer" to="." method="_on_spawn_barrier_timeout"]
+[connection signal="food_value_change" from="Player" to="CanvasLayer/UI_LifeBar" method="_on_Player_food_value_change"]
+[connection signal="game_over" from="Player" to="." method="_on_Player_game_over"]
+[connection signal="timeout" from="DifficultyTimer" to="." method="_on_DifficultyTimer_timeout"]
+[connection signal="tween_all_completed" from="FadeTweenBKG" to="." method="_on_FadeTweenBKG_tween_all_completed"]
+[connection signal="pressed" from="CC_GameOver/VBox/HBox3/Button_PlayAgain" to="." method="_on_Button_PlayAgain_pressed"]
+[connection signal="pressed" from="CC_GameOver/VBox/HBox3/Button_QuitGame" to="." method="_on_Button_QuitGame_pressed"]

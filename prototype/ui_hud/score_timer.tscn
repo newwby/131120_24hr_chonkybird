@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://prototype/ui_hud/score_timer.gd" type="Script" id=1]
+
+[node name="UI_ScoreTimer" type="Control"]
+show_behind_parent = true
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -640.0
+margin_bottom = 360.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -40.0
+margin_bottom = 40.0
+
+[node name="ScoreLabel" type="Label" parent="MarginContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "0"
+align = 1
+valign = 1
+
+[node name="ScoreIncrement" type="Timer" parent="."]
+autostart = true
+[connection signal="timeout" from="ScoreIncrement" to="." method="_on_Timer_timeout"]
