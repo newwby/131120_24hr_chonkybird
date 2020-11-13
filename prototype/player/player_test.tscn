@@ -1,13 +1,22 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://prototype/player/player_test.gd" type="Script" id=1]
 [ext_resource path="res://prototype/player/chonky.png" type="Texture" id=2]
 [ext_resource path="res://prototype/player/chonky_frame3.png" type="Texture" id=3]
 [ext_resource path="res://prototype/player/chonky_frame2.png" type="Texture" id=4]
 [ext_resource path="res://prototype/player/chonky_frame4.png" type="Texture" id=5]
+[ext_resource path="res://prototype/player/chonky_helmet_frame4.png" type="Texture" id=6]
+[ext_resource path="res://prototype/player/chonky_helmet_frame3.png" type="Texture" id=7]
+[ext_resource path="res://prototype/player/chonky_helmet_frame1.png" type="Texture" id=8]
+[ext_resource path="res://prototype/player/chonky_helmet_frame2.png" type="Texture" id=9]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
+"frames": [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 7 ), ExtResource( 9 ), ExtResource( 8 ), ExtResource( 6 ) ],
+"loop": true,
+"name": "chonky_helmet",
+"speed": 9.0
+}, {
 "frames": [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 5 ) ],
 "loop": true,
 "name": "chonky",
@@ -49,10 +58,11 @@ spread = 90.0
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
-animation = "chonky"
-frame = 3
+animation = "chonky_helmet"
+frame = 4
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0.20655, 0.581122 )
 shape = SubResource( 1 )
