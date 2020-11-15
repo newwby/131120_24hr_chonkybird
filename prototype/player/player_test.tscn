@@ -59,10 +59,9 @@ spread = 90.0
 [node name="Sprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
 animation = "chonky_helmet"
-frame = 4
+frame = 2
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( 0.20655, 0.581122 )
 shape = SubResource( 1 )
