@@ -31,6 +31,9 @@ onready var spawn_timer = $SpawnBarrierTimer
 onready var difficulty_timer = $DifficultyTimer
 const BASE_DIFFICULTY_TIMER_WAIT: float = 4.0
 
+## --------------------------------------------------------------------------
+## STARTING A NEW GAME
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	initialise_new_game()
@@ -49,6 +52,14 @@ func initialise_new_game():
 	spawn_timer.start()
 	difficulty_timer.wait_time = BASE_DIFFICULTY_TIMER_WAIT
 	player_node.apply_impulse(Vector2(), Vector2(0,1))
+
+func reset_game():
+	handle_timers(false)
+	game_over_fade(false)
+	difficulty_level = 0
+
+## --------------------------------------------------------------------------
+## SPAWNING OBSTACLES AND COLLECTABLES
 
 func _on_spawn_barrier_timeout():
 	var random_chance = randi()%2
@@ -109,6 +120,17 @@ func spawn_pickup(spawn_top: bool):
 		new_food.position.y -= 250 + random_axis_distribution
 	new_food.run_tween()
 
+## --------------------------------------------------------------------------
+# TIMEOUT FUNCS
+
+func handle_timers(stop:bool = true):
+	if stop:
+		spawn_timer.stop()
+		difficulty_timer.stop()
+	else:
+		spawn_timer.start()
+		difficulty_timer.start()
+
 func difficulty_increase():
 	difficulty_level += 1
 	level_scroll_speed = BASE_LEVEL_SCROLL_SPEED + (difficulty_level*4)
@@ -119,54 +141,19 @@ func difficulty_increase():
 func _on_DifficultyTimer_timeout():
 	difficulty_increase()
 
-func _on_Player_game_over():
-	game_over_fade()
-	handle_timers()
 
-func reset_game():
-	handle_timers(false)
-	game_over_fade(false)
-	difficulty_level = 0
-
-func handle_timers(stop:bool = true):
-	if stop:
-		spawn_timer.stop()
-		difficulty_timer.stop()
-	else:
-		spawn_timer.start()
-		difficulty_timer.start()
-
-func game_over_fade(fade_out:bool = true):
-	var fade_dur: float = 1.0
-	if fade_out:
-		player_node.is_active = false
-		player_node.sleeping = true
-		handle_buttons(false)
-		black_bkg.modulate.a = 0
-		black_bkg.visible = true
-		black_bkg_fade_tween.interpolate_property(black_bkg, "modulate", Color(1,1,1,0), Color(1,1,1,1), fade_dur, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		black_bkg_fade_tween.start()
-		ui_player_fade_tween.interpolate_property(HUD_LifeBar, "modulate", Color(0,1,0,1), Color(0,1,0,0), 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		ui_player_fade_tween.interpolate_property(HUD_ScoreTimer, "modulate", Color(1,1,1,1), Color(1,1,1,0), 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		ui_player_fade_tween.interpolate_property(player_node.sprite_gfx, "modulate", Color(1,1,1,1), Color(1,1,1,0), fade_dur*0.5, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		ui_player_fade_tween.start()
-		#HUD_GameOver
-	else:
-		player_node.is_active = true
-		handle_buttons()
-		black_bkg_fade_tween.interpolate_property(black_bkg, "modulate", Color(1,1,1,1), Color(1,1,1,0), fade_dur*0.5, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		black_bkg_fade_tween.start()
-		$Player.position = $PlayerStart.position
-
-func delete_all_spawned():
-	for i in spawn_holder_node.get_children():
-		i.call_deferred('free')
+## --------------------------------------------------------------------------
+# BUTTON FUNCS
 
 func _on_Button_PlayAgain_pressed():
 	reset_game()
 	
 func _on_Button_QuitGame_pressed():
 	get_tree().quit()
+	
+
+## --------------------------------------------------------------------------
+# ANIMATE FUNCS
 
 func _on_FadeTweenBKG_tween_all_completed():
 	if not player_node.is_active:
@@ -195,3 +182,36 @@ func fade_in_UI():
 	ui_player_fade_tween.interpolate_property(HUD_ScoreTimer, "modulate", Color(1,1,1,0), Color(1,1,1,1), 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	ui_player_fade_tween.interpolate_property(player_node.sprite_gfx, "modulate", Color(1,1,1,0), Color(1,1,1,1), fade_dur*0.5, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	ui_player_fade_tween.start()
+
+## --------------------------------------------------------------------------
+# GAMEOVER FUNCS
+
+func _on_Player_game_over():
+	game_over_fade()
+	handle_timers()
+
+func game_over_fade(fade_out:bool = true):
+	var fade_dur: float = 1.0
+	if fade_out:
+		player_node.is_active = false
+		player_node.sleeping = true
+		handle_buttons(false)
+		black_bkg.modulate.a = 0
+		black_bkg.visible = true
+		black_bkg_fade_tween.interpolate_property(black_bkg, "modulate", Color(1,1,1,0), Color(1,1,1,1), fade_dur, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		black_bkg_fade_tween.start()
+		ui_player_fade_tween.interpolate_property(HUD_LifeBar, "modulate", Color(0,1,0,1), Color(0,1,0,0), 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		ui_player_fade_tween.interpolate_property(HUD_ScoreTimer, "modulate", Color(1,1,1,1), Color(1,1,1,0), 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		ui_player_fade_tween.interpolate_property(player_node.sprite_gfx, "modulate", Color(1,1,1,1), Color(1,1,1,0), fade_dur*0.5, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		ui_player_fade_tween.start()
+		#HUD_GameOver
+	else:
+		player_node.is_active = true
+		handle_buttons()
+		black_bkg_fade_tween.interpolate_property(black_bkg, "modulate", Color(1,1,1,1), Color(1,1,1,0), fade_dur*0.5, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		black_bkg_fade_tween.start()
+		$Player.position = $PlayerStart.position
+
+func delete_all_spawned():
+	for i in spawn_holder_node.get_children():
+		i.call_deferred('free')
